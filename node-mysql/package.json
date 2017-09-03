@@ -1,0 +1,23 @@
+{
+  "name": "node-mysql",
+  "version": "0.0.0",
+  "description": "Example of how to make a connection with MySQL databases inside a nodejs project.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "mysql",
+    "example"
+  ],
+  "author": "Geraldo B. Landre <geraldo.landre@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "mysql": "^2.14.1"
+  },
+  "devDependencies": {
+    "body-parser": "^1.17.2",
+    "ejs": "^2.5.7",
+    "express": "^4.15.4"
+  }
+}
