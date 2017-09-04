@@ -8,7 +8,8 @@
   },
   "keywords": [
     "mongodb",
-    "mongoose"
+    "mongoose",
+    "angularjs "
   ],
   "author": "Geraldo B. Landre",
   "license": "MIT",

@@ -1,8 +1,7 @@
 var mongoose = require('mongoose');
-
-mongoose.connect('mongodb://dev:V8Dhmo41QIvxZBd0@ds121674.mlab.com:21674/geralds', {
-  useMongoClient: true
-});
+const { connectionString } = require('../config').mongodb;
+console.log('connectionString:', connectionString);
+mongoose.connect(connectionString, {useMongoClient: true});
 
 var Schema = mongoose.Schema;
 

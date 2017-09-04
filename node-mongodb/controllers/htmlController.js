@@ -5,7 +5,9 @@ var Person = require('../models').Person;
 
 module.exports = function (app) {
   app.get('/', (req, res) => {
-    res.render('index');
+    const { people } = req;
+    console.log('... people:', people);
+    res.render('index', { people });
   });
 
   app.get('/person/:id', (req, res) => {

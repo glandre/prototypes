@@ -20,9 +20,11 @@ app.use('/', function (req, res, next) {
       throw err;
     }
     console.log(users);
+    req.people = users;
+
+    next();
   })
 
-  next();
 });
 
 htmlController(app);
