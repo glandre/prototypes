@@ -1,0 +1,22 @@
+{
+  "name": "node-todo",
+  "version": "1.0.0",
+  "description": "App developed by following Understand Nodejs course from Tony Alicea at Udemy.",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "mongodb",
+    "mongoose",
+    "angular"
+  ],
+  "author": "Geraldo B. Landre <geraldo.landre@gmail.com>",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.17.2",
+    "express": "^4.15.4",
+    "mongoose": "^4.11.9"
+  }
+}
