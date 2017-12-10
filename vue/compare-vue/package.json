@@ -11,9 +11,11 @@
     "unit": "cross-env BABEL_ENV=test karma start test/unit/karma.conf.js --single-run",
     "e2e": "node test/e2e/runner.js",
     "test": "npm run unit && npm run e2e",
-    "lint": "eslint --ext .js,.vue src test/unit/specs test/e2e/specs"
+    "lint": "eslint --ext .js,.vue src test/unit/specs test/e2e/specs",
+    "version": "auto-changelog -p && git add CHANGELOG.md"
   },
   "dependencies": {
+    "auto-changelog": "^1.2.2",
     "bulma": "^0.5.1",
     "vue": "^2.4.2",
     "vue-router": "^2.7.0"
