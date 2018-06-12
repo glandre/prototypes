@@ -10,7 +10,10 @@ module.exports = (uri, router) => {
     if (!req.body || !req.body.payload == null) {
       return res.status(400).send({ error: 'Payload expected' })
     }
-    const payload = JSON.parse(req.body.payload)
+    console.log('body:', req.body)
+    console.log('---- HEADERS ----')
+    console.log(JSON.stringify(req.headers))
+    const { payload } = req.body
     console.log(`Event Happened: ${payload.event_id} - ${payload.event_type}`)
     db.insert({
       timestamp: new Date(),
