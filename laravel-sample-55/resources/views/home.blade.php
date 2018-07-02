@@ -16,7 +16,21 @@
 
                     You are logged in!
                 </div>
+
             </div>
+
+            <div class="panel panel-default">
+                <passport-clients></passport-clients>
+            </div>
+            
+            <div class="panel panel-default">
+                <passport-authorized-clients></passport-authorized-clients>
+            </div>
+            
+            <div class="panel panel-default">
+                <passport-personal-access-tokens></passport-personal-access-tokens>
+            </div>
+
         </div>
     </div>
 </div>

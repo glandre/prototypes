@@ -1,0 +1,22 @@
+{
+  "name": "mean-auth",
+  "version": "1.0.0",
+  "description": "Example of API authentication in the MEAN stack. Tutorial: https://www.sitepoint.com/user-authentication-mean-stack/",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "api",
+    "auth",
+    "nodejs",
+    "mean",
+    "angularjs"
+  ],
+  "author": "Geraldo B. Landre",
+  "license": "MIT",
+  "devDependencies": {
+    "express": "^4.16.2",
+    "express-jwt": "^5.3.0"
+  }
+}
