@@ -4,8 +4,13 @@
   "description": "App developed by following Understand Nodejs course from Tony Alicea at Udemy.",
   "main": "index.js",
   "scripts": {
+    "prestart": "(mkdir ./log || :) && (mkdir ./db || :) && npm run mongo:restart",
     "start": "nodemon app.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "mongo:start": "mongod --dbpath ./db --fork --logpath ./logs/mongo.log",
+    "mongo:stop": "mongo admin --eval \"db.getSiblingDB('admin').shutdownServer()\" || :",
+    "mongo:restart": "npm run mongo:stop && npm run mongo:start",
+    "mongo:logs": "tail -f ./logs/mongo.log"
   },
   "keywords": [
     "mongodb",
@@ -17,6 +22,7 @@
   "dependencies": {
     "body-parser": "^1.17.2",
     "express": "^4.15.4",
-    "mongoose": "^4.11.9"
+    "mongoose": "^4.11.9",
+    "nodemon": "^1.18.3"
   }
 }
