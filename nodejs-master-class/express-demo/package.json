@@ -1,0 +1,20 @@
+{
+  "name": "nodejs-master-class",
+  "version": "1.0.0",
+  "description": "This is a study project created by following the course: https://www.udemy.com/nodejs-master-class",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.16.4",
+    "joi": "^14.0.1"
+  },
+  "devDependencies": {
+    "nodemon": "^1.18.4"
+  }
+}
