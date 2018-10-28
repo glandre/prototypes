@@ -1,14 +1,17 @@
 const NOT_FOUND_ERROR = 'errors/NOT_FOUND_ERROR'
+const GENRE_NOT_FOUND_ERROR = 'errors/GENRE_NOT_FOUND_ERROR'
 
 
 const DEFAULT_STATUS = 400
 
 Statuses = {
-	[NOT_FOUND_ERROR]: 404
+	[NOT_FOUND_ERROR]: 404,
+	[GENRE_NOT_FOUND_ERROR]: 404
 }
 
 Messages = {
-	[NOT_FOUND_ERROR]: 'Not Found'
+	[NOT_FOUND_ERROR]: 'Not Found',
+	[GENRE_NOT_FOUND_ERROR]: 'Genre Not Found'
 }
 
 const getErrorResponse = (error, defaultStatus = DEFAULT_STATUS) => {
@@ -33,6 +36,7 @@ const getErrorResponse = (error, defaultStatus = DEFAULT_STATUS) => {
 }
 
 module.exports = {
+	GENRE_NOT_FOUND_ERROR,
 	NOT_FOUND_ERROR,
 	getErrorResponse
 }
