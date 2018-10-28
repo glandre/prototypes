@@ -1,7 +1,7 @@
 const Joi = require('joi')
 const mongoose = require('mongoose')
 
-const joiSchema = Joi.object().keys({
+const joiSchema = Joi.object({
 	name: Joi.string().min(3).max(30).required()
 })
 
@@ -23,5 +23,6 @@ const schema = new mongoose.Schema({
 
 module.exports = {
 	validate,
-	schema
+	schema,
+	joiSchema
 }
