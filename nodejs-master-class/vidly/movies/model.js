@@ -3,6 +3,7 @@ const {schema, validate} = require('./schema')
 const {NOT_FOUND_ERROR, GENRE_NOT_FOUND_ERROR} = require('../errors')
 const {pickNotNil} = require('../utils')
 const Genre = require('../genres/model').Model
+
 const Model = mongoose.model('movies', schema)
 
 const getAll = (q = null, sorted = false) => {
@@ -23,21 +24,21 @@ const getAll = (q = null, sorted = false) => {
 }
 
 const getById = async (id) => {
-	return Model.findById(id)
+  return Model.findById(id)
     .select('-__v')
 }
 
 const add = async (data) => {
-	validate(data)
+  validate(data)
 
   console.log('Data validated...')
 
   data = await transformGenre(data)
 
-	const element = new Model(data)
+  const element = new Model(data)
   await element.save()
   console.log('returing element:', element)
-	return element
+  return element
 }
 
 const addAll = (array) => {
@@ -48,14 +49,14 @@ const addAll = (array) => {
 }
 
 const update = async (id, data) => {
-	validate(data, true)
+  validate(data, true)
   data = await transformGenre(data)
-	return Model.findByIdAndUpdate(id, { $set: data }, { new: true })
+  return Model.findByIdAndUpdate(id, { $set: data }, { new: true })
     .select('-__v')
 }
 
 const deleteById = (id) => {
-	return Model.findByIdAndDelete(id)
+  return Model.findByIdAndDelete(id)
     .select('-__v')
 }
 
@@ -87,10 +88,11 @@ const transformGenre = async (data) => {
 // Exports
 //
 module.exports = {
-	getAll,
-	getById,
-	add,
+  getAll,
+  getById,
+  add,
   addAll,
-	update,
-	deleteById,
+  update,
+  deleteById,
+  Model
 }

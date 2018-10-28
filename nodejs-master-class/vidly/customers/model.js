@@ -52,6 +52,7 @@ module.exports = {
 	getById,
 	add,
   addAll,
-	update,
-	deleteById,
+  update,
+  deleteById,
+  Model
 }

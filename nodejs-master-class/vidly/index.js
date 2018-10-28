@@ -5,6 +5,7 @@ const morgan = require('morgan')
 const customers = require('./customers/routes')
 const genres = require('./genres/routes')
 const movies = require('./movies/routes')
+const rentals = require('./rentals/routes')
 
 const app = express()
 
@@ -33,6 +34,7 @@ app.get('/', (req, res) => {
 app.use('/customers', customers())
 app.use('/genres', genres())
 app.use('/movies', movies())
+app.use('/rentals', rentals())
 
 const port = process.env.PORT || 3001
 app.listen(port, () => console.log(`Listening on port ${port}`))
