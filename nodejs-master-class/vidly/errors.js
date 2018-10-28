@@ -27,6 +27,7 @@ Messages = {
 	[CUSTOMER_NOT_FOUND_ERROR]: 'Customer Not Found',
 	[GENRE_NOT_FOUND_ERROR]: 'Genre Not Found',
 	[MOVIE_NOT_FOUND_ERROR]: 'Movie Not Found',
+	[MOVIE_NOT_IN_STOCK_ERROR]: 'Movie currently not in stock'
 }
 
 const getErrorResponse = (error, defaultStatus = DEFAULT_STATUS) => {

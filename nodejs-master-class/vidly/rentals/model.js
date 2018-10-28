@@ -13,14 +13,10 @@ const Movie = require('../movies/model').Model
 
 const Model = mongoose.model('rentals', schema)
 
-const getAll = (sorted = false) => {
-  const query = Model.find()
-
-  if (sorted && (sorted+'').toLowerCase() === 'true') {
-    query = query.sort('name')
-  }
-
-  return query
+const getAll = () => {
+  return Model
+    .find()
+    .sort('-dateOut')
     .populate('customer')
     .populate('movie')
     .select('-__v')
@@ -65,12 +61,13 @@ const add = async (data) => {
   // Save Rental
 	const element = new Model({
     customer: customer._id,
-    movie: movie._id
+    movie: movie._id,
+    dateOut: new Date()
   })
   await element.save()
 
   console.log('returing element:', element)
-	return element // .populate(movie).populate(customer)
+	return element
 }
 
 // const addAll = (array) => {

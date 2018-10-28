@@ -7,14 +7,10 @@ const joiSchema = Joi.object().keys({
 })
 
 const validate = (data, updating = false) => {
-	console.log('movies.validate', {data})
 	const {error} = Joi.validate(data, joiSchema)
 	if (error) {
-		console.log('movies.validate > throwing...')
 		throw error
 	}
-
-	console.log('movies.validate > all good!')
 }
 
 const schema = new mongoose.Schema({
@@ -27,6 +23,17 @@ const schema = new mongoose.Schema({
 		type: mongoose.Schema.Types.ObjectId,
 		ref: 'customers',
 		required: true
+	},
+	dateOut: {
+		type: Date,
+		required: true
+	},
+	dateReturned: {
+		type: Date
+	},
+	rentalFee: {
+		type: Number,
+		min: 0
 	}
 })
 
