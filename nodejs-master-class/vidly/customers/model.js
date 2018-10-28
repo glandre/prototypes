@@ -2,7 +2,7 @@ const mongoose = require('mongoose')
 const {schema, validate} = require('./schema')
 const {NOT_FOUND_ERROR} = require('../errors')
 
-const Model = mongoose.model('genres', schema)
+const Model = mongoose.model('customers', schema)
 
 const getAll = (q = null, sorted = false) => {
   let query = (q && (q+'').length > 0)

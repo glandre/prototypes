@@ -2,6 +2,7 @@ const express = require('express')
 const helmet = require('helmet')
 const mongoose = require('mongoose')
 const morgan = require('morgan')
+const customers = require('./customers/routes')
 const genres = require('./genres/routes')
 
 const app = express()
@@ -28,6 +29,7 @@ app.get('/', (req, res) => {
 	return res.send('Hello From Vidly!')
 })
 
+app.use('/customers', customers())
 app.use('/genres', genres())
 
 const port = process.env.PORT || 3001
