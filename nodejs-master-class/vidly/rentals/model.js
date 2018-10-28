@@ -1,3 +1,4 @@
+const Fawn = require('fawn')
 const mongoose = require('mongoose')
 const {schema, validate} = require('./schema')
 const {
@@ -12,6 +13,8 @@ const Customer = require('../customers/model').Model
 const Movie = require('../movies/model').Model
 
 const Model = mongoose.model('rentals', schema)
+
+Fawn.init(mongoose)
 
 const getAll = () => {
   return Model
@@ -49,22 +52,18 @@ const add = async (data) => {
     throw new Error(MOVIE_NOT_IN_STOCK_ERROR)
   }
 
-  // movie: decrement stock
-  const updatedMovie = await Movie.findByIdAndUpdate(data.movieId, {
-    $inc: {
-      numberInStock: -1
-    }
-  })
-
-  console.log('Movie successfully updated:', updatedMovie)
-
-  // Save Rental
-	const element = new Model({
+  const element = new Model({
     customer: customer._id,
     movie: movie._id,
     dateOut: new Date()
   })
-  await element.save()
+
+  new Fawn.Task()
+    .save('rentals', element)
+    .update('movies', { _id: movie._id }, {
+      $inc: { numberInStock: -1 }
+    })
+    .run()
 
   console.log('returing element:', element)
 	return element
