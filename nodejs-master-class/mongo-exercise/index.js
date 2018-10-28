@@ -3,6 +3,7 @@ const helmet = require('helmet')
 const Joi = require('joi')
 const mongoose = require('mongoose')
 const morgan = require('morgan')
+const {pickNotNil} = require('./utils')
 
 const app = express()
 
@@ -27,12 +28,45 @@ mongoose.connect(mongoUri, {useNewUrlParser: true})
 
 // mongoose create schema
 const courseSchema = new mongoose.Schema({
-    tags: [String],
+    tags: {
+    	type: [String],
+    	validate: {
+    		validator: function (v) {
+    			return v && v.length > 0
+    		},
+    		message: 'A course should have at least one tag'
+    	}
+    },
+    category: {
+    	type: String,
+    	enum: ['web', 'mobile', 'network']
+    },
     date: {type: Date, default: Date.now},
-    name: String,
-    author: String,
-    isPublished: Boolean,
-    price: Number,
+    name: {
+    	type: String, 
+    	required: true,
+    	minlength: 3,
+    	maxlength: 255,
+    	// match: /pattern/
+    },
+    author: {
+    	type: String, 
+    	required: true,
+    	minlength: 3,
+    	maxlength: 255
+    },
+    isPublished: {type: Boolean, default: false},
+    price: {
+    	type: Number,
+    	required: function () {
+    		console.log('required function - isPublished:', this.isPublished)
+    		const isRequired = !!this.isPublished
+    		console.log('required function - isRequired:', isRequired)
+    		return isRequired
+    	},
+    	min: 10,
+    	max: 200
+    },
 })
 // console.log('courseSchema.obj', courseSchema.obj)
 
@@ -40,13 +74,14 @@ const courseSchema = new mongoose.Schema({
 const Course = mongoose.model('courses', courseSchema)
 
 const validateCourseUpdatePayload = (course) => {
-	const schema = {
+	const schema = Joi.object().keys({
 		tags: Joi.array().items(Joi.string()),
-		name: Joi.string().min(3),
-		author: Joi.string().min(3),
+		name: Joi.string().min(3).max(255),
+		author: Joi.string().min(3).max(255),
 		isPublished: Joi.boolean(),
+		date: Joi.date(),
 		price: Joi.number()
-	}
+	})
 	return Joi.validate(course, schema)
 }
 
@@ -111,6 +146,18 @@ app.get('/courses', async (req, res) => {
 		return res.json(result)
 	} catch (error) {
 		return res.status(400).json({error})
+	}
+})
+
+app.post('/courses', async (req, res) => {
+	try {
+		const course = new Course(req.body)
+		// await course.validate()
+		const result = await course.save()
+		return res.json(result)
+	} catch (error) {
+		console.log('Error!', error)
+		return res.status(400).json(error)
 	}
 })
 
@@ -185,42 +232,55 @@ app.get('/courses/:id', async (req, res) => {
 })
 
 app.put('/courses/:id', async (req, res) => {
-	console.log('Validating inputs...')
-	const {error} = validateCourseUpdatePayload(req.body)
+	try {
+		console.log('Validating inputs...')
 
-	if (error) {
-		return res.status(400).json({
-			message: 'Bad Request',
-			error
-		})
+		const {error} = validateCourseUpdatePayload(pickNotNil(req.body))
+
+		if (error) {
+			return res.status(400).json({
+				message: 'Bad Request',
+				error
+			})
+		}
+
+		if (req.query.replace === 'true') {
+			console.log('Replacing...')
+			await (new Course).validate(req.body)
+			const result = await Course.replaceOne({_id: req.params.id}, req.body)
+			const course = await Course.findById(req.params.id)
+			return res.json(course)
+		}
+
+		// Update: Update First Approach
+		const {id} = req.params
+		const result = await Course.findByIdAndUpdate(id, {
+			$set: req.body
+		}, { new: true })
+
+		// // Update: Update First Approach
+		// const {id} = req.params
+		// const result = await Course.updateOne({ _id: id }, {
+		// 	$set: req.body
+		// })
+
+		// // Update: Query First Approach
+		// const {id} = req.params
+		// console.log('Searching for the course...')
+		// const course = await Course.findById(id)
+		// if (!course) {
+		// 	return res.status(404).json({ message: 'Course not found' })
+		// }
+
+		// console.log('Updating course...')
+		// course.set(req.body)
+
+		// const result = await course.save()
+		// console.log('Course updated!', result)
+		return res.json(result)
+	} catch (error) {
+		return res.status(400).json(error)
 	}
-
-	// Update: Update First Approach
-	const {id} = req.params
-	const result = await Course.findByIdAndUpdate(id, {
-		$set: req.body
-	}, { new: true })
-
-	// // Update: Update First Approach
-	// const {id} = req.params
-	// const result = await Course.updateOne({ _id: id }, {
-	// 	$set: req.body
-	// })
-
-	// // Update: Query First Approach
-	// const {id} = req.params
-	// console.log('Searching for the course...')
-	// const course = await Course.findById(id)
-	// if (!course) {
-	// 	return res.status(404).json({ message: 'Course not found' })
-	// }
-
-	// console.log('Updating course...')
-	// course.set(req.body)
-
-	// const result = await course.save()
-	// console.log('Course updated!', result)
-	return res.json(result)
 })
 
 app.delete('/courses/:id', async (req, res) => {
