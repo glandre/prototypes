@@ -1,0 +1,19 @@
+{
+  "name": "mongo-exercise",
+  "version": "1.0.0",
+  "description": "Get all the published backend courses, sort them by their name, pick only their name and author, and display them.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.16.4",
+    "helmet": "^3.14.0",
+    "joi": "^14.0.1",
+    "mongoose": "^5.3.7",
+    "morgan": "^1.9.1"
+  }
+}
