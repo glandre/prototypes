@@ -1,9 +1,27 @@
 const express = require('express')
-const app = express()
-
+const helmet = require('helmet')
+const mongoose = require('mongoose')
+const morgan = require('morgan')
 const genres = require('./genres/routes')
 
+const app = express()
+
+app.use(helmet())
+app.use(morgan('tiny'))
+app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
+
+// connect to mongoose
+const dbuser = process.env.VIDLY_DB_USER
+const dbpassword = process.env.VIDLY_DB_PWD
+const dbhost = process.env.VIDLY_DB_HOST
+if (!dbuser || !dbpassword || !dbhost) {
+	throw new Error('Missing Database Environment Variables')
+}
+const mongoUri = `mongodb://${dbuser}:${dbpassword}@${dbhost}/nodejs-master-class`
+mongoose.connect(mongoUri, {useNewUrlParser: true})
+	.then(() => console.log('MongoDB connection successful!'))
+	.catch(err => console.log('Error connecting to MongoDB!', err))
 
 // routes
 app.get('/', (req, res) => {
