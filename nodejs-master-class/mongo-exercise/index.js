@@ -31,15 +31,20 @@ const courseSchema = new mongoose.Schema({
     tags: {
     	type: [String],
     	validate: {
-    		validator: function (v) {
-    			return v && v.length > 0
+    		isAsync: true,
+    		validator: function (v, callback) {
+    			setTimeout(() => {
+    				callback(v && v.length > 0)
+    			}, 1000)
     		},
     		message: 'A course should have at least one tag'
     	}
     },
     category: {
     	type: String,
-    	enum: ['web', 'mobile', 'network']
+    	enum: ['web', 'mobile', 'network'],
+    	lowercase: true,
+    	trim: true
     },
     date: {type: Date, default: Date.now},
     name: {
@@ -55,17 +60,20 @@ const courseSchema = new mongoose.Schema({
     	minlength: 3,
     	maxlength: 255
     },
-    isPublished: {type: Boolean, default: false},
+    isPublished: {
+    	type: Boolean,
+    	default: false,
+    },
     price: {
     	type: Number,
     	required: function () {
     		console.log('required function - isPublished:', this.isPublished)
-    		const isRequired = !!this.isPublished
-    		console.log('required function - isRequired:', isRequired)
-    		return isRequired
+    		return this.isPublished
     	},
     	min: 10,
-    	max: 200
+    	max: 200,
+    	get: v => Math.round(v),
+    	set: v => Math.round(v)
     },
 })
 // console.log('courseSchema.obj', courseSchema.obj)
@@ -156,8 +164,15 @@ app.post('/courses', async (req, res) => {
 		const result = await course.save()
 		return res.json(result)
 	} catch (error) {
-		console.log('Error!', error)
-		return res.status(400).json(error)
+		// console.log('Error!', error)
+		const {errors} = error
+		const errorMessages = []
+		for (const field in errors) {
+			if (errors[field].message) {
+				errorMessages.push(errors[field].message)
+			}
+		}
+		return res.status(400).json({errors: errorMessages})
 	}
 })
 
