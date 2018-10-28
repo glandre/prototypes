@@ -1,9 +1,9 @@
-const Joi = require('joi')
+const Joi = require('../joi')
 const mongoose = require('mongoose')
 
 const joiSchema = Joi.object().keys({
-	movieId: Joi.string().min(24).max(24).required(),
-	customerId: Joi.string().min(24).max(24).required()
+	movieId: Joi.objectId().required(),
+	customerId: Joi.objectId().required()
 })
 
 const validate = (data, updating = false) => {
